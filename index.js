@@ -32,7 +32,25 @@
  */
 function onRoomStart() {
   console.log("onRoomStart")
-  return {};
+  return {
+    state: {
+      board: [
+        null, null, null, null, null
+      ],
+      hands: [
+        [null, null],
+        [null, null],
+      ],
+      blinds: 10,
+      players_bets: [
+        5, 10,
+      ],
+      current_action: 0,
+      actions_this_turn: [],
+      cards_on_board: 0,
+    },
+    winner:  null,
+  };
 }
 
 /**
@@ -43,7 +61,26 @@ function onRoomStart() {
  */
 function onPlayerJoin(player, boardGame) {
   console.log("onPlayerJoin", player, boardGame)
+  const { players } = boardGame;
+
+  if (players.length == 2) {
+    return { joinable: false }
+  }
   return {};
+}
+
+
+function index_of_player (plr, plrs) {
+  if (plr.id == plrs[0].id){
+    return 0;
+  }
+  return 1;
+}
+
+
+function max_bet(bets) {
+  if (bets[0] > bets[1]) return bets[0];
+  return bets[1];
 }
 
 /**
@@ -55,7 +92,28 @@ function onPlayerJoin(player, boardGame) {
  */
 function onPlayerMove(player, move, boardGame) {
   console.log("onPlayerJoin", player, move, boardGame)
-  return {};
+  const {state, players} = boardGame;
+  const {
+    board, 
+    hands, 
+    players_bets, 
+    current_action, 
+    actions_this_turn, 
+    cards_on_board
+  } = state; // uhhhh
+  const index = index_of_player(player, players);
+
+  if (index != current_action) {
+    return {state};
+  }
+  
+  const {action} = move;
+  
+  if (action == 'call'){
+  }
+
+
+
 }
 
 /**
